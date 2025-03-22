@@ -41,8 +41,8 @@ console.log(giveChange(50));
 console.log("Montant: 25€");
 console.log(giveChange(25));
 
-console.log("Montant: 45€");
-console.log(giveChange(45));
+console.log("Montant: 32€");
+console.log(giveChange(32));
 
 console.log("Montant: 7€");
 console.log(giveChange(7));
