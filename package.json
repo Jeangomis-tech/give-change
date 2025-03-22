@@ -1,10 +1,16 @@
 {
   "name": "give-change",
+  "jest": {
+    "verbose": true
+  },
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "giveChange.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
 }
