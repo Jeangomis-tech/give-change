@@ -1,54 +1,115 @@
-function giveChange(amount) {
-    //Initialize the denominations of 10€, 5€ notes and 2€ coins
-    let billetsDix = 0;
+function giveChange(montant) {
+    if (montant <= 0) {
+        return "The amount must be greater than 0.";
+    }
+
+    // Impossible case (1 and 3 euros)
+    if (montant === 1 || montant === 3) {
+        return `${montant} € : Impossible to return with 10, 5 and 2 coins.`;
+    }
+
+    let billetsDix = Math.floor(montant / 10);
+    let remainingAmount = montant % 10;
+
     let billetsCinq = 0;
     let piecesDeux = 0;
 
-    //Remains to be returned
-    let remainingAmount = amount;
-    // CASE 10€
-    billetsDix = Math.floor(remainingAmount / 10);
-    remainingAmount = remainingAmount % 10;
-
-    //CASE 5€
-    if (remainingAmount >= 5) {
-        billetsCinq = 1;
-        remainingAmount -= 5;
+    // Gestion des différents cas pour le reste
+    switch (remainingAmount) {
+        case 1:
+            if (billetsDix > 0) {
+                billetsDix--;
+                billetsCinq = 1;
+                piecesDeux = 3;
+            }
+            break;
+        case 2:
+            piecesDeux = 1;
+            break;
+        case 3:
+            if (billetsDix > 0) {
+                billetsDix--;
+                billetsCinq = 1;
+                piecesDeux = 4;
+            }
+            break;
+        case 4:
+            piecesDeux = 2;
+            break;
+        case 5:
+            billetsCinq = 1;
+            break;
+        case 6:
+            piecesDeux = 3;
+            break;
+        case 7:
+            billetsCinq = 1;
+            piecesDeux = 1;
+            break;
+        case 8:
+            piecesDeux = 4;
+            break;
+        case 9:
+            billetsCinq = 1;
+            piecesDeux = 2;
+            break;
     }
 
-    //CASE 2€
-    piecesDeux = Math.floor(remainingAmount / 2);
-    remainingAmount = remainingAmount % 2;
+    // Construction du résultat
+    const parts = [];
 
-    // Check if there is €1 left that cannot be returned
-    if (remainingAmount !== 0) {
-        return "Unable to return this exact amount with the available notes/coins";
+    if (billetsDix > 0) {
+        parts.push(`${billetsDix} billet(s) de 10€`);
     }
 
-    // THE RETURNED RESULT
-    return {
-        billetsDix: billetsDix,
-        billetsCinq: billetsCinq,
-        piecesDeux: piecesDeux
-    };
+    if (billetsCinq > 0) {
+        parts.push(`${billetsCinq} billet(s) de 5€`);
+    }
+
+    if (piecesDeux > 0) {
+        parts.push(`${piecesDeux} pièce(s) de 2€`);
+    }
+
+    return `${montant} € = ${parts.join(" + ")}`;
 }
-module.exports = giveChange;
 
-// Tests
-console.log("Montant: 50€");
-console.log(giveChange(50));
+// Version avec interface console
+function startInterface() {
+    console.log("\nEntrez 'quit' pour quitter");
 
-console.log("Montant: 25€");
-console.log(giveChange(25));
+    const readline = require('readline');
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
 
-console.log("Montant: 32€");
-console.log(giveChange(32));
+    function prompt() {
+        rl.question('\nMontant à rendre (en euros) : ', (input) => {
+            if (input.toLowerCase() === 'quit') {
+                console.log("Merci d'avoir utilisé le système. Au revoir !");
+                rl.close();
+                return;
+            }
 
-console.log("Montant: 7€");
-console.log(giveChange(7));
+            const montant = parseInt(input);
 
-console.log("Montant: 2€");
-console.log(giveChange(2));
-console.log("Montant: -10€");
-console.log(giveChange(-10));
+            if (isNaN(montant)) {
+                console.log("Veuillez entrer un nombre valide.");
+            } else {
+                console.log(giveChange(montant));
+            }
 
+            prompt();
+        });
+    }
+
+    prompt();
+}
+
+// Pour lancer l'interface console
+if (typeof require !== 'undefined' && require.main === module) {
+    startInterface();
+}
+
+// Export pour les tests
+module.exports = { giveChange };
