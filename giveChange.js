@@ -1,15 +1,15 @@
-function giveChange(montant) {
-    if (montant <= 0) {
+function giveChange(amount) {
+    if (amount <= 0) {
         return "The amount must be greater than 0.";
     }
 
     // Impossible case (1 and 3 euros)
-    if (montant === 1 || montant === 3) {
-        return `${montant} € : Impossible to return with 10, 5 and 2 coins.`;
+    if (amount === 1 || amount === 3) {
+        return `${amount} € : Impossible to return with 10, 5 and 2 coins.`;
     }
 
-    let billetsDix = Math.floor(montant / 10);
-    let remainingAmount = montant % 10;
+    let billetsDix = Math.floor(amount / 10);
+    let remainingAmount = amount % 10;
 
     let billetsCinq = 0;
     let piecesDeux = 0;
@@ -70,7 +70,7 @@ function giveChange(montant) {
         parts.push(`${piecesDeux} pièce(s) de 2€`);
     }
 
-    return `${montant} € = ${parts.join(" + ")}`;
+    return `${amount} € = ${parts.join(" + ")}`;
 }
 
 // Version avec interface console
@@ -91,12 +91,12 @@ function startInterface() {
                 return;
             }
 
-            const montant = parseInt(input);
+            const amount = parseInt(input);
 
-            if (isNaN(montant)) {
+            if (isNaN(amount)) {
                 console.log("Veuillez entrer un nombre valide.");
             } else {
-                console.log(giveChange(montant));
+                console.log(giveChange(amount));
             }
 
             prompt();
